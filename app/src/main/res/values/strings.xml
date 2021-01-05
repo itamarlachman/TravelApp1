@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Travel | Customers</string>
+    <string name="action_about">About</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title">Travels Car | Register</string>
+    <string name="travel_cars_register">Travel Cars | Register</string>
+    <string name="register">Register</string>
+    <string name="enter_first_name">Enter First Name</string>
+    <string name="enter_last_name">Enter Last Name</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="enter_passengers">Enter Passengers</string>
+    <string name="enter_email">Enter Email Adderss</string>
+    <string name="enter_source">Enter Source Location</string>
+    <string name="enter_destination">Enter Destination Location</string>
+    <string name="enter_phone">Enter Phone Number</string>
+
+    <array name="statuses">
+        <item name="New"></item>
+        <item name="Suggested"></item>
+        <item name="Approved"></item>
+        <item name="Selected"></item>
+        <item name="Finished"></item>
+    </array>
+
+    <array name="companies">
+        <item name="Dan"></item>
+        <item name="Egged"></item>
+    </array>
+
+</resources>
