@@ -1,8 +1,7 @@
 package il.co.expertize.sources;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
-
+import il.co.expertize.interfaces.DataResult;
 import il.co.expertize.interfaces.IDataSource;
 import il.co.expertize.models.Customer;
 import il.co.expertize.models.Travel;
@@ -19,7 +18,9 @@ public class Room implements IDataSource {
     }
 
     @Override
-    public MutableLiveData<ArrayList<Travel>> liveTravels() {
+    public MutableLiveData<DataResult> result() {
+        // TODO: implement method.
         return null;
     }
+
 }

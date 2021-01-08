@@ -1,5 +1,6 @@
-package il.co.expertize;
+package il.co.expertize.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -7,12 +8,18 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
+import il.co.expertize.R;
+import il.co.expertize.services.TravelsService;
+import il.co.expertize.ui.fragments.List;
+import il.co.expertize.ui.viewmodels.MainViewModel;
 import il.co.expertize.utils.DialogUtils;
 import il.co.expertize.utils.EmailUtils;
 
@@ -25,12 +32,22 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         registerViews();
+        registerService();
+    }
+
+    private void registerService() {
+        Intent service = new Intent(Main.this, TravelsService.class);
+        startService(service);
+    }
+
+    private void unRegisterService() {
+        Intent service = new Intent(Main.this, TravelsService.class);
+        stopService(service);
     }
 
     private void registerViews() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,10 +71,17 @@ public class Main extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_about) {
-           new DialogUtils(Main.this).showAlert("Travels App | V1.2","All rightrs resever @2021","Close");
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                new DialogUtils(Main.this).showAlert("Travels App | V1.2","All rightrs resever @2021","Close");
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegisterService();
     }
 }

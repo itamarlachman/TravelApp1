@@ -1,12 +1,16 @@
 package il.co.expertize.models;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 
 import il.co.expertize.interfaces.IKey;
 import il.co.expertize.utils.DateUtils;
+import il.co.expertize.utils.DistanceUtils;
 
 public class Travel  implements Serializable, IKey {
+
+
     public enum Status {
         New,
         Suggested,
@@ -21,13 +25,23 @@ public class Travel  implements Serializable, IKey {
     protected Date date;
     protected Status status;
     protected Company company;
+    protected Double distance;
 
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
 
     public Travel() {
         this.customer = new Customer();
         this.source = new Location();
         this.destination = new Location();
         this.date = DateUtils.getNow();
+        this.distance = 0.0;
+
     }
 
     public Travel(Customer customer, Location source, Location destination, Integer passengers, Date date, Status status, Company company) {
@@ -80,6 +94,10 @@ public class Travel  implements Serializable, IKey {
         this.date = date;
     }
 
+    public void setDateString(String date) throws ParseException {
+        this.date = DateUtils.getDate(date);
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -99,7 +117,7 @@ public class Travel  implements Serializable, IKey {
     public String getKey() {
         String tel = this.customer.tel;
         String date = DateUtils.getDateTime();
-        String key = String.format("%s_%s", date,tel);
+        String key = String.format("%s_%s", getDateString(),tel);
         return key;
     }
 
@@ -109,5 +127,13 @@ public class Travel  implements Serializable, IKey {
                 " to " + destination.getAddress() +
                 " with " + passengers.toString() + " passengers ";
 
+    }
+
+    public String getDateString() {
+        return DateUtils.getDate(this.date);
+    }
+
+    public void calcDistance() {
+        this.distance = DistanceUtils.distance(this.source.lat,this.source.lng,this.destination.lat,this.destination.lng);
     }
 }

@@ -20,6 +20,11 @@
     <string name="enter_source">Enter Source Location</string>
     <string name="enter_destination">Enter Destination Location</string>
     <string name="enter_phone">Enter Phone Number</string>
+    <string name="accept">Accept</string>
+    <string name="refuse">Refuse</string>
+    <string name="view">View</string>
+    <string name="open">Open</string>
+    <string name="action_add">Add</string>
 
     <array name="statuses">
         <item name="New"></item>

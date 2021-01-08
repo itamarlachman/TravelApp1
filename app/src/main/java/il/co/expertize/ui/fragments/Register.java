@@ -1,15 +1,19 @@
 package il.co.expertize.ui.fragments;
 
 import il.co.expertize.R;
+import il.co.expertize.interfaces.DataResult;
 import il.co.expertize.models.Customer;
 import il.co.expertize.models.Travel;
 import il.co.expertize.sources.Repository;
+import il.co.expertize.ui.viewmodels.MainViewModel;
 import il.co.expertize.utils.DialogUtils;
+import il.co.expertize.utils.Globals;
 import il.co.expertize.utils.LocationUtils;
 import il.co.expertize.utils.SharedPrefUtils;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +21,8 @@ import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,6 +32,7 @@ import java.util.Calendar;
 
 public class Register extends Fragment {
 
+    private MainViewModel viewModel;
     TextInputEditText firstName, lastName, email, tel, date, passengers, source, destination;
     SharedPrefUtils sharedPrefUtils;
     DialogUtils dialogUtils;
@@ -55,6 +62,8 @@ public class Register extends Fragment {
     }
 
     private void registerViews(@NonNull View view) {
+        viewModel = ViewModelProviders.of(this).get(MainViewModel .class);
+
         firstName = view.findViewById(R.id.firstName);
         lastName = view.findViewById(R.id.lastName);
         tel = view.findViewById(R.id.tel);
@@ -83,10 +92,22 @@ public class Register extends Fragment {
         view.findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Travel travel = load();
-                sharedPrefUtils.saveTravel(travel);
-                Repository.getDataSource(Repository.Type.FireBase).saveTravel(travel);
-                dialogUtils.showAlert("Travel Saved", travel.getKey(), "Close");
+                final Travel travel = load();
+                viewModel.saveTravel(travel);
+                viewModel.result().observe(getViewLifecycleOwner(), new Observer<DataResult>() {
+                    @Override
+                    public void onChanged(DataResult dataResult) {
+                        if (dataResult.getEntity() == DataResult.Entity.Travels &&
+                            dataResult.getOperation() == DataResult.Operation.Add) {
+                            sharedPrefUtils.saveTravel(travel);
+                            dialogUtils.showAlert("Travel Saved", travel.getKey(), "Close");
+                            Globals.travel = travel;
+                            Globals.NewTravel = true;
+                            NavHostFragment.findNavController(Register.this)
+                                           .navigate(R.id.back);
+                        }
+                    }
+                });
             }
         });
 
@@ -105,26 +126,32 @@ public class Register extends Fragment {
         LocationUtils locationUtils = new LocationUtils(getContext());
         Travel travel = new Travel();
 
-        travel.setSource(locationUtils.getLocation(source.getText().toString()));
-        travel.setDestination(locationUtils.getLocation(destination.getText().toString()));
-        travel.setPassengers(Integer.parseInt(passengers.getText().toString()));
+        try {
+            travel.setSource(locationUtils.getLocation(source.getText().toString()));
+            travel.setDestination(locationUtils.getLocation(destination.getText().toString()));
 
-        Customer customer = travel.getCustomer();
-        customer.setFirstName(firstName.getText().toString());
-        customer.setLastName(lastName.getText().toString());
-        customer.setEmail(email.getText().toString());
-        customer.setTel(tel.getText().toString());
+            travel.calcDistance();
+
+            travel.setPassengers(Integer.parseInt(passengers.getText().toString()));
+            travel.setDateString(date.getText().toString());
+            Customer customer = travel.getCustomer();
+            customer.setFirstName(firstName.getText().toString());
+            customer.setLastName(lastName.getText().toString());
+            customer.setEmail(email.getText().toString());
+            customer.setTel(tel.getText().toString());
+        } catch (Exception ex) {
+            Log.d(Globals.TAG,"Error Loading travel from form, see error:" + ex.getMessage());
+        }
+
         return travel;
     }
 
     private void init(Travel travel) {
         try {
             Customer customer = travel.getCustomer();
-
             source.setText(travel.getSource().getAddress());
             destination.setText(travel.getDestination().getAddress());
-            date.setText(travel.getDate().toString());
-
+            date.setText(travel.getDateString());
             firstName.setText(customer.getFirstName());
             lastName.setText(customer.getLastName());
             passengers.setText(travel.getPassengers().toString());

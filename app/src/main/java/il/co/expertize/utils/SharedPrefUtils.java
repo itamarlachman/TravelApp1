@@ -22,6 +22,12 @@ public class SharedPrefUtils {
                 .apply();
     }
 
+    public void removeTravel() {
+        _pref.edit()
+                .remove("travel")
+                .apply();
+    }
+
     public Travel loadTravel() {
         Travel travel = null;
         String json = _pref.getString("travel", null);
