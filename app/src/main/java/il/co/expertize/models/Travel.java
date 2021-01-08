@@ -41,6 +41,7 @@ public class Travel  implements Serializable, IKey {
         this.destination = new Location();
         this.date = DateUtils.getNow();
         this.distance = 0.0;
+        this.status = Status.New;
 
     }
 

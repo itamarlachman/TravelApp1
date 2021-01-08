@@ -2,9 +2,6 @@ package il.co.expertize.ui.viewmodels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import java.util.ArrayList;
-
 import il.co.expertize.interfaces.DataResult;
 import il.co.expertize.interfaces.IDataSource;
 import il.co.expertize.models.Customer;

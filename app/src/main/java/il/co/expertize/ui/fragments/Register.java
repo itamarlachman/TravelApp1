@@ -4,13 +4,11 @@ import il.co.expertize.R;
 import il.co.expertize.interfaces.DataResult;
 import il.co.expertize.models.Customer;
 import il.co.expertize.models.Travel;
-import il.co.expertize.sources.Repository;
 import il.co.expertize.ui.viewmodels.MainViewModel;
 import il.co.expertize.utils.DialogUtils;
 import il.co.expertize.utils.Globals;
 import il.co.expertize.utils.LocationUtils;
 import il.co.expertize.utils.SharedPrefUtils;
-
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,15 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.util.Calendar;
 
 
