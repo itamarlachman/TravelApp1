@@ -2,9 +2,47 @@ package il.co.expertize.models;
 
 import java.io.Serializable;
 
-public class Company extends  Customer implements Serializable {
+public class Company implements Serializable {
+    protected String name;
+    protected String email;
+    protected String password;
 
-    public Company(String firstName, String lastName, String email, String address, String tel) {
-        super(firstName, lastName, email, address, tel);
+    public Company() {
     }
+
+    public Company(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public Company(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

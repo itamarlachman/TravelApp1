@@ -11,7 +11,8 @@ public class DataResult {
     public enum Entity {
         None,
         Travels,
-        Companies
+        Companies,
+        Authorization
     }
 
     protected Operation operation = Operation.None;
